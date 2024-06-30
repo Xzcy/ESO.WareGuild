@@ -9,6 +9,31 @@ local GuildFuzzy1, GuildFuzzy2, GuildFuzzy3, GuildFuzzy4, GuildFuzzy5 = false, f
 local GuildS1A, GuildS1B, GuildS2A, GuildS2B, GuildS3A, GuildS3B, GuildS4A, GuildS4B, GuildS5A, GuildS5B = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 local GuildS1C, GuildS2C, GuildS3C, GuildS4C, GuildS5C = 1, 1, 1, 1, 1
 local ClipGuild, ClipSteps = false, {}
+local MaterialChoices = {
+  "/", 
+  WG.Lang.BLACKSMITH, 
+  WG.Lang.CLOTH, 
+  WG.Lang.WOOD, 
+  WG.Lang.JEWELRY, 
+  WG.Lang.COOK, 
+  WG.Lang.ENCHANT, 
+  WG.Lang.ALCHEMY, 
+  WG.Lang.STYLE, 
+  WG.Lang.TRAIT,
+}
+local MaterialChoicesValue = {
+  "/", 
+  WAREGUILD_STORE_B,
+  WAREGUILD_STORE_C,
+  WAREGUILD_STORE_W,
+  WAREGUILD_STORE_J,
+  WAREGUILD_STORE_P,
+  WAREGUILD_STORE_E,
+  WAREGUILD_STORE_A,
+  WAREGUILD_STORE_S,
+  WAREGUILD_STORE_T,
+}
+
 --List of Guilds
 local function GuildList()
   local Name = {"/", }
@@ -367,8 +392,8 @@ function WG.BuildMenu()
         { --Store Craft Materials
         type = "dropdown",
         name = WG.Lang.GUILD_STORE_ALL_TYPE_DROP,
-        choices = {"/", WG.Lang.BLACKSMITH, WG.Lang.CLOTH, WG.Lang.WOOD, WG.Lang.JEWELRY, WG.Lang.COOK, WG.Lang.ENCHANT, WG.Lang.ALCHEMY, WG.Lang.STYLE, WG.Lang.TRAIT},
-        choicesValues = {"/", WAREGUILD_STORE_B, WAREGUILD_STORE_C, WAREGUILD_STORE_W, WAREGUILD_STORE_J, WAREGUILD_STORE_P, WAREGUILD_STORE_E, WAREGUILD_STORE_A, WAREGUILD_STORE_S, WAREGUILD_STORE_T},
+        choices = MaterialChoices,
+        choicesValues = MaterialChoicesValue,
         scrollable = true,
         getFunc = function() return "/" end,
         setFunc = function(var) 
@@ -554,8 +579,8 @@ function WG.BuildMenu()
         { --Store Craft Materials
         type = "dropdown",
         name = WG.Lang.GUILD_STORE_ALL_TYPE_DROP, 
-        choices = {"/", WG.Lang.BLACKSMITH, WG.Lang.CLOTH, WG.Lang.WOOD, WG.Lang.JEWELRY, WG.Lang.COOK, WG.Lang.ENCHANT, WG.Lang.ALCHEMY, WG.Lang.STYLE, WG.Lang.TRAIT},
-        choicesValues = {"/", WAREGUILD_STORE_B, WAREGUILD_STORE_C, WAREGUILD_STORE_W, WAREGUILD_STORE_J, WAREGUILD_STORE_P, WAREGUILD_STORE_E, WAREGUILD_STORE_A, WAREGUILD_STORE_S, WAREGUILD_STORE_T},
+        choices = MaterialChoices,
+        choicesValues = MaterialChoicesValue,
         scrollable = true,
         getFunc = function() return "/" end,
         setFunc = function(var) 
@@ -741,8 +766,8 @@ function WG.BuildMenu()
         { --Store Craft Materials
         type = "dropdown",
         name = WG.Lang.GUILD_STORE_ALL_TYPE_DROP, 
-        choices = {"/", WG.Lang.BLACKSMITH, WG.Lang.CLOTH, WG.Lang.WOOD, WG.Lang.JEWELRY, WG.Lang.COOK, WG.Lang.ENCHANT, WG.Lang.ALCHEMY, WG.Lang.STYLE, WG.Lang.TRAIT},
-        choicesValues = {"/", WAREGUILD_STORE_B, WAREGUILD_STORE_C, WAREGUILD_STORE_W, WAREGUILD_STORE_J, WAREGUILD_STORE_P, WAREGUILD_STORE_E, WAREGUILD_STORE_A, WAREGUILD_STORE_S, WAREGUILD_STORE_T},
+        choices = MaterialChoices,
+        choicesValues = MaterialChoicesValue,
         scrollable = true,
         getFunc = function() return "/" end,
         setFunc = function(var) 
@@ -928,8 +953,8 @@ function WG.BuildMenu()
         { --Store Craft Materials
         type = "dropdown",
         name = WG.Lang.GUILD_STORE_ALL_TYPE_DROP, 
-        choices = {"/", WG.Lang.BLACKSMITH, WG.Lang.CLOTH, WG.Lang.WOOD, WG.Lang.JEWELRY, WG.Lang.COOK, WG.Lang.ENCHANT, WG.Lang.ALCHEMY, WG.Lang.STYLE, WG.Lang.TRAIT},
-        choicesValues = {"/", WAREGUILD_STORE_B, WAREGUILD_STORE_C, WAREGUILD_STORE_W, WAREGUILD_STORE_J, WAREGUILD_STORE_P, WAREGUILD_STORE_E, WAREGUILD_STORE_A, WAREGUILD_STORE_S, WAREGUILD_STORE_T},
+        choices = MaterialChoices,
+        choicesValues = MaterialChoicesValue,
         scrollable = true,
         getFunc = function() return "/" end,
         setFunc = function(var) 
@@ -1115,8 +1140,8 @@ function WG.BuildMenu()
         { --Store Craft Materials
         type = "dropdown",
         name = WG.Lang.GUILD_STORE_ALL_TYPE_DROP, 
-        choices = {"/", WG.Lang.BLACKSMITH, WG.Lang.CLOTH, WG.Lang.WOOD, WG.Lang.JEWELRY, WG.Lang.COOK, WG.Lang.ENCHANT, WG.Lang.ALCHEMY, WG.Lang.STYLE, WG.Lang.TRAIT},
-        choicesValues = {"/", WAREGUILD_STORE_B, WAREGUILD_STORE_C, WAREGUILD_STORE_W, WAREGUILD_STORE_J, WAREGUILD_STORE_P, WAREGUILD_STORE_E, WAREGUILD_STORE_A, WAREGUILD_STORE_S, WAREGUILD_STORE_T},
+        choices = MaterialChoices,
+        choicesValues = MaterialChoicesValue,
         scrollable = true,
         getFunc = function() return "/" end,
         setFunc = function(var) 

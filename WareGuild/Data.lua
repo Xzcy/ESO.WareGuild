@@ -9,6 +9,7 @@ WAREGUILD_DAILY = 31
 --StepType_STORE
 WAREGUILD_STORE_TO = 21
 WAREGUILD_STORE_ALL = 22
+--Materials
 WAREGUILD_STORE_B = 1 --BlackSmith
 WAREGUILD_STORE_C = 2 --Clothing
 WAREGUILD_STORE_E = 3 --Enchanting
@@ -16,6 +17,7 @@ WAREGUILD_STORE_A = 4 --Alchemy
 WAREGUILD_STORE_P = 5 --Provisioning
 WAREGUILD_STORE_W = 6 --Woodworking
 WAREGUILD_STORE_J = 7 --Jewelry
+
 WAREGUILD_STORE_S = 8 --Style Materials
 WAREGUILD_STORE_T = 9 --Trait Items
 --QueueType

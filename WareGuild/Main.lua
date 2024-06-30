@@ -3,7 +3,7 @@ local WG = SDC_WareGuild
 WG.name = "WareGuild"
 WG.title = "WareGuild"
 WG.author = "@MelanAster"
-WG.version = "0.11"
+WG.version = "0.12"
 
 --Dault Setting
 WG.Default = {
@@ -28,7 +28,7 @@ WG.Default = {
   AutoCraftBag = nil,
 }
 
---Structure
+--Structure of Rules Stored in GuildX
 --[[
 {
   [GuildId] = Num,
@@ -118,7 +118,7 @@ local function HaveWrits()
   return false
 end
 
---ShouldOpen?
+--Should Open Guild Bank?
 function WG.ShouldOpenGuildBank()
   local Step = WG.AllGuildStep()
   for i = 1, #Step do
@@ -141,12 +141,13 @@ local function ToLink(Id)
   return "|H1:item:"..Id..":30:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h"
 end
 
+--ItemLink to [ItemLink]
 local function ToBracket(ItemLink)
   if not ItemLink then return nil end
   return ItemLink:gsub("|H0:", "|H1:")
 end
 
---Total step of 5 guild
+--Total Step of All Guilds
 function WG.AllGuildStep()
   local Tep = {}
   local Guild = {WG.SV.Guild1, WG.SV.Guild2, WG.SV.Guild3, WG.SV.Guild4, WG.SV.Guild5}
@@ -166,13 +167,13 @@ function WG.FindItem(BagId, ItemId, ItemLink)
   if BagId == 1 then
     for i = 0, GetBagSize(1) do
       local Link = GetItemLink(1, i)
-      if Link == ItemLink or GetItemLinkItemId(Link) == ItemId then
+      if not IsItemLinkStolen(Link) and (Link == ItemLink or GetItemLinkItemId(Link) == ItemId) then
         local count = select(2, GetItemInfo(1, i))
         Total = Total + count
         table.insert(Slot, {["BagId"] = 1, ["SlotId"] = i, ["Count"] = count})
       end
     end
-  --CurrentGuildBank
+  --Current Guild Bank
   elseif BagId == 3 then
     local StartPoint = GetNextGuildBankSlotId()
     for i = StartPoint, StartPoint + 500 do
@@ -184,7 +185,7 @@ function WG.FindItem(BagId, ItemId, ItemLink)
       end
     end
   end
-  --Resort
+  --Resort by Stack Count
   table.sort(
     Slot,
     function(a, b)
@@ -204,10 +205,11 @@ function WG.FindItemType(CraftType)
     local ItemLink = GetItemLink(1, i)
     local SkillType = GetItemLinkCraftingSkillType(ItemLink)
     local Fliter1, Fliter2 = GetItemLinkFilterTypeInfo(ItemLink)
-    if Fliter1 == ITEMFILTERTYPE_CRAFTING then
+    if not IsItemLinkStolen(ItemLink) and Fliter1 == ITEMFILTERTYPE_CRAFTING then
       if CraftType == SkillType or
         (CraftType == 8 and Fliter2 == ITEMFILTERTYPE_STYLE_MATERIALS) or
-        (CraftType == 9 and Fliter2 == ITEMFILTERTYPE_TRAIT_ITEMS) then
+        (CraftType == 9 and Fliter2 == ITEMFILTERTYPE_TRAIT_ITEMS)
+      then
         table.insert(Slot, {["BagId"] = 1, ["SlotId"] = i})
       end
     end

@@ -15,6 +15,7 @@ WG.Lang = {
   ["COOK"] = GetString(SI_ITEMFILTERTYPE18),
   ["WOOD"] = GetString(SI_ITEMFILTERTYPE15),
   ["JEWELRY"] = GetString(SI_ITEMFILTERTYPE25),
+  
   ["STYLE"] = GetString(SI_ITEMFILTERTYPE19),
   ["TRAIT"] = GetString(SI_ITEMFILTERTYPE20),
   
