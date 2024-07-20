@@ -100,5 +100,5 @@ WG.Lang = {
   ["CLIP"] = "剪切板",
   ["CLIP_PASTE"] = "粘贴",
   
-  ["SETTING_BOTTOM_TIPS"] = "[BDF/SDC/WG/W2S/FCS] 反馈群：776061612",
+  ["SETTING_BOTTOM_TIPS"] = "[BDF/SDC/WG/W2S/FCS/...] 作者反馈群：776061612",
 }

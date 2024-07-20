@@ -1,7 +1,7 @@
 ## Title: WareGuild
-## APIVersion: 101041
-## Version: 0.12
-## AddOnVersion: 2024031100
+## APIVersion: 101041 101042
+## Version: 0.14
+## AddOnVersion: 20240720
 ## Author: @MelanAster
 ## Description: Item Management Addon for Guild Banks.
 ## DependsOn: LibAddonMenu-2.0

@@ -3,9 +3,9 @@ local WG = SDC_WareGuild
 WG.name = "WareGuild"
 WG.title = "WareGuild"
 WG.author = "@MelanAster"
-WG.version = "0.12"
+WG.version = "0.14"
 
---Dault Setting
+--Default Setting
 WG.Default = {
   CV = false,
   
@@ -52,7 +52,6 @@ local function OnAddOnLoaded(eventCode, addonName)
   WG.CV = ZO_SavedVars:NewCharacterIdSettings("WareGuild_SaveVars", 1, nil, WG.Default, GetWorldName())
   WG.SwitchSV()
 
-  --Event
   --CallBack
   SCENE_MANAGER:RegisterCallback("SceneStateChanged", WG.InteractCore)
   
@@ -60,7 +59,7 @@ local function OnAddOnLoaded(eventCode, addonName)
   WG.BuildMenu()
 end
 
---Setting
+--Character Setting?
 function WG.SwitchSV()
   --Account/Character
   if WG.CV.CV then
@@ -79,6 +78,7 @@ function WG.InteractCore(scene, _, newstate)
   --Interact?
   if newstate ~= SCENE_SHOWN then return end
   if scene.name ~= "gamepadInteract" and scene.name ~= "interact" then return end
+  
   --Bank NPC Interact?
   local Type
   local OptionNum = GetChatterOptionCount() + 2
@@ -86,6 +86,7 @@ function WG.InteractCore(scene, _, newstate)
     SCENE_MANAGER:RegisterCallback("SceneStateChanged", WG.GuildBankCore)
     SelectChatterOption(2)
   end
+
     --PC
   if SCENE_MANAGER:IsShowing("interact") then
     local control = WINDOW_MANAGER:GetControlByName("ZO_ChatterOption2")
@@ -123,7 +124,9 @@ function WG.ShouldOpenGuildBank()
   local Step = WG.AllGuildStep()
   for i = 1, #Step do
     local Type = Step[i]["Type"]
+    --When Daily Craft
     if WG.SV.ForceOpen and Type == WAREGUILD_DAILY and HaveWrits() then return true end
+    --Have Something to Store
     if WG.SV.AutoOpen then
       if Type == WAREGUILD_STORE_ALL and WG.FindItem(1, Step[i]["ItemId"], Step[i]["ItemLink"]) then return true end
       if Type < 10 and WG.FindItemType(Type)[1] then return true end
@@ -159,32 +162,54 @@ function WG.AllGuildStep()
   return Tep
 end
 
---Find Item Slot
+--Patch for Bug of Food ItemLink in Guild Bank
+local function DoesItemMatch(Link, ItemId, ItemLink)
+  --No Link Get
+  if not Link or Link == "" then return false end
+  
+  --Normal Match
+  if Link == ItemLink or GetItemLinkItemId(Link) == ItemId then return true end
+
+  --Patch for Food
+  local Fliter1, Fliter2 = GetItemLinkFilterTypeInfo(ItemLink)
+  if Fliter1 == 3 and Fliter2 == 6 then
+    local Match1, Match2 = Link:gmatch("item:%d+:%d+:"), ItemLink:gmatch("item:%d+:%d+:")
+    if Match1() == Match2() then return true end
+  end
+
+  --Nothing Match
+  return false
+end
+
+--CORE: Find Item Slot
 function WG.FindItem(BagId, ItemId, ItemLink)
   local Slot = {}
   local Total = 0
+  
   --BackBag
   if BagId == 1 then
     for i = 0, GetBagSize(1) do
       local Link = GetItemLink(1, i)
-      if not IsItemLinkStolen(Link) and (Link == ItemLink or GetItemLinkItemId(Link) == ItemId) then
+      if not IsItemLinkStolen(Link) and DoesItemMatch(Link, ItemId, ItemLink) then
         local count = select(2, GetItemInfo(1, i))
         Total = Total + count
         table.insert(Slot, {["BagId"] = 1, ["SlotId"] = i, ["Count"] = count})
       end
     end
+
   --Current Guild Bank
   elseif BagId == 3 then
     local StartPoint = GetNextGuildBankSlotId()
     for i = StartPoint, StartPoint + 500 do
       local Link = GetItemLink(3, i)
-      if Link == ItemLink or GetItemLinkItemId(Link) == ItemId then
+      if DoesItemMatch(Link, ItemId, ItemLink) then
         local count = select(2, GetItemInfo(3, i))
         Total = Total + count
         table.insert(Slot, {["BagId"] = 3, ["SlotId"] = i, ["Count"] = count})
       end
     end
   end
+  
   --Resort by Stack Count
   table.sort(
     Slot,
@@ -193,8 +218,10 @@ function WG.FindItem(BagId, ItemId, ItemLink)
       if BagId == 3 then return a["Count"] < b["Count"] end
     end
   )
+  
   --TotalCount
   Slot["Total"] = Total
+  
   return Slot
 end
 
@@ -424,6 +451,7 @@ function WG.GuildBankWork(DoRemove)
   end
 
   local bank = Step[1]
+  
   --SelectGuild with stack
   if GetSelectedGuildBankId() ~= bank.GuildId then
     EVENT_MANAGER:RegisterForEvent(WG.name, EVENT_GUILD_BANK_ITEMS_READY, 
