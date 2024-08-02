@@ -69,6 +69,9 @@ WG.Lang = {
   ["SETTING_NE_STORE"] = "When Not Enough, Store the Remaining",
   ["SETTING_NE_STORE_TOOLTIP"] = "When off, store steps were completely skipped for lack of items",
   
+  ["SETTING_IGNORE_FCOIS"] = "Ignoe FCO ItemSaver",
+  ["SETTING_IGNORE_FCOIS_TOOLTIP"] = "Ignore the restrictions of FCO ItemSaver on depositing / withdrawing guild bank items",
+  
   ["SETTING_HEADER_SELECT_GUILD"] = "Select Guild Banks",
   ["SETTING_GUILD_TIPS"] = "Tips:\r\nProceed in order, please make sure the access to Guild Banks\r\nUI needs to be reloaded after joining a new guild", -- \r\n Line Feed
   

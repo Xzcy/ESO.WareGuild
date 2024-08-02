@@ -189,6 +189,18 @@ function WG.BuildMenu()
 		setFunc = function(var) WG.SV.NE_Store = var end,
     width = "full",
     },
+    {
+    type = "divider",
+    alpha = 0.2,
+    },
+    {
+    type = "checkbox",
+		name = WG.Lang.SETTING_IGNORE_FCOIS,
+    tooltip = WG.Lang.SETTING_IGNORE_FCOIS_TOOLTIP,
+		getFunc = function() return WG.SV.IgnoreFCOIS end,
+		setFunc = function(var) WG.SV.IgnoreFCOIS = var end,
+    width = "full",
+    },
   --Guild Bank
     {
     type = "header",

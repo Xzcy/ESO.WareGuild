@@ -69,6 +69,9 @@ WG.Lang = {
   ["SETTING_NE_STORE"] = "物品不足时，存储所有剩余",
   ["SETTING_NE_STORE_TOOLTIP"] = "关闭时, 物品不足将跳过该存储步骤",
   
+  ["SETTING_IGNORE_FCOIS"] = "无视 FCO ItemSaver 插件",
+  ["SETTING_IGNORE_FCOIS_TOOLTIP"] = "无视 FCO ItemSaver 插件对于存取公会银行物品的限制",
+  
   ["SETTING_HEADER_SELECT_GUILD"] = "选择公会银行",
   ["SETTING_GUILD_TIPS"] = "小贴士:\r\nWG将按顺序依次执行各银行步骤，请自行确保公会银行权限\r\n新加入公会后需重新加载UI，以读取公会列表", -- \r\n Line Feed
   
@@ -100,5 +103,5 @@ WG.Lang = {
   ["CLIP"] = "剪切板",
   ["CLIP_PASTE"] = "粘贴",
   
-  ["SETTING_BOTTOM_TIPS"] = "[BDF/SDC/WG/W2S/FCS/...] 作者反馈群：776061612",
+  ["SETTING_BOTTOM_TIPS"] = "可在 Guar Protection/Splendid Achievers 公会群，找到作者 @MelanAster",
 }

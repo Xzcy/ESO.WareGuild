@@ -3,7 +3,7 @@ local WG = SDC_WareGuild
 WG.name = "WareGuild"
 WG.title = "WareGuild"
 WG.author = "@MelanAster"
-WG.version = "0.14"
+WG.version = "0.15"
 
 --Default Setting
 WG.Default = {
@@ -26,6 +26,7 @@ WG.Default = {
   Guild5 = {},
   
   AutoCraftBag = nil,
+  IgnoreFCOIS = false,
 }
 
 --Structure of Rules Stored in GuildX
@@ -162,6 +163,22 @@ function WG.AllGuildStep()
   return Tep
 end
 
+----------------------------------------------
+--For Addon (FCOIS ItemSaver)
+local function FCOISAllow(bagId, slotIndex)
+  --No Need to Do
+  if WG.SV.IgnoreFCOIS then return true end
+  if not FCOIS then return true end
+  --Backbag
+  if bagId == 1 then
+    return not FCOIS.IsGuildBankDepositLocked(bagId, slotIndex)
+  end
+  --GuildBank
+  if bagId == 3 then
+    return not FCOIS.IsGuildBankWithdrawLocked(bagId, slotIndex)
+  end
+end
+
 --Patch for Bug of Food ItemLink in Guild Bank
 local function DoesItemMatch(Link, ItemId, ItemLink)
   --No Link Get
@@ -190,7 +207,7 @@ function WG.FindItem(BagId, ItemId, ItemLink)
   if BagId == 1 then
     for i = 0, GetBagSize(1) do
       local Link = GetItemLink(1, i)
-      if not IsItemLinkStolen(Link) and DoesItemMatch(Link, ItemId, ItemLink) then
+      if not IsItemLinkStolen(Link) and FCOISAllow(1, i) and DoesItemMatch(Link, ItemId, ItemLink) then
         local count = select(2, GetItemInfo(1, i))
         Total = Total + count
         table.insert(Slot, {["BagId"] = 1, ["SlotId"] = i, ["Count"] = count})
@@ -202,7 +219,7 @@ function WG.FindItem(BagId, ItemId, ItemLink)
     local StartPoint = GetNextGuildBankSlotId()
     for i = StartPoint, StartPoint + 500 do
       local Link = GetItemLink(3, i)
-      if DoesItemMatch(Link, ItemId, ItemLink) then
+      if FCOISAllow(3, i) and DoesItemMatch(Link, ItemId, ItemLink) then
         local count = select(2, GetItemInfo(3, i))
         Total = Total + count
         table.insert(Slot, {["BagId"] = 3, ["SlotId"] = i, ["Count"] = count})
@@ -232,7 +249,7 @@ function WG.FindItemType(CraftType)
     local ItemLink = GetItemLink(1, i)
     local SkillType = GetItemLinkCraftingSkillType(ItemLink)
     local Fliter1, Fliter2 = GetItemLinkFilterTypeInfo(ItemLink)
-    if not IsItemLinkStolen(ItemLink) and Fliter1 == ITEMFILTERTYPE_CRAFTING then
+    if not IsItemLinkStolen(ItemLink) and FCOISAllow(1, i) and Fliter1 == ITEMFILTERTYPE_CRAFTING then
       if CraftType == SkillType or
         (CraftType == 8 and Fliter2 == ITEMFILTERTYPE_STYLE_MATERIALS) or
         (CraftType == 9 and Fliter2 == ITEMFILTERTYPE_TRAIT_ITEMS)
