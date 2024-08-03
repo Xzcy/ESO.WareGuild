@@ -3,7 +3,7 @@ local WG = SDC_WareGuild
 WG.name = "WareGuild"
 WG.title = "WareGuild"
 WG.author = "@MelanAster"
-WG.version = "0.15"
+WG.version = "0.20"
 
 --Default Setting
 WG.Default = {
@@ -179,7 +179,7 @@ local function FCOISAllow(bagId, slotIndex)
   end
 end
 
---Patch for Bug of Food ItemLink in Guild Bank
+--Patch for Bug of ItemLink in Guild Bank
 local function DoesItemMatch(Link, ItemId, ItemLink)
   --No Link Get
   if not Link or Link == "" then return false end
@@ -187,11 +187,13 @@ local function DoesItemMatch(Link, ItemId, ItemLink)
   --Normal Match
   if Link == ItemLink or GetItemLinkItemId(Link) == ItemId then return true end
 
-  --Patch for Food
-  local Fliter1, Fliter2 = GetItemLinkFilterTypeInfo(ItemLink)
-  if Fliter1 == 3 and Fliter2 == 6 then
-    local Match1, Match2 = Link:gmatch("item:%d+:%d+:"), ItemLink:gmatch("item:%d+:%d+:")
-    if Match1() == Match2() then return true end
+  --Patch for InternalLevel
+  if ItemLink then
+    local F_1, I_1, A_1 = string.match(Link, "(item:%d+:%d+):(%d+):(.+)")
+    local F_2, I_2, A_2 = string.match(ItemLink, "(item:%d+:%d+):(%d+):(.+)")
+    if I_1 == "0" or I_1 == "1" or I_2 == "0" or I_2 == "1" then
+      if F_1 == F_2 and A_1 == A_2 then return true end
+    end
   end
 
   --Nothing Match
