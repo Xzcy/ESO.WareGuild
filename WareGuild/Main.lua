@@ -3,7 +3,7 @@ local WG = SDC_WareGuild
 WG.name = "WareGuild"
 WG.title = "WareGuild"
 WG.author = "@MelanAster"
-WG.version = "0.20"
+WG.version = "0.21"
 
 --Default Setting
 WG.Default = {
@@ -26,6 +26,8 @@ WG.Default = {
   Guild5 = {},
   
   AutoCraftBag = nil,
+  IgnoreInventory = false,
+  
   IgnoreFCOIS = false,
 }
 

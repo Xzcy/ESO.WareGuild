@@ -173,6 +173,18 @@ function WG.BuildMenu()
 		setFunc = function(var) WG.SV.KeepCraft = var end,
     width = "full",
     },
+    { --Ignore Inventory
+		type = "checkbox",
+		name = WG.Lang.SETTING_IGNORE_INVENTORY,
+    tooltip = WG.Lang.SETTING_IGNORE_INVENTORY_TOOLTIP,
+		getFunc = function() return WG.SV.IgnoreInventory end,
+		setFunc = function(var) WG.SV.IgnoreInventory = var end,
+    width = "full",
+    },
+    {
+    type = "divider",
+    alpha = 0.2,
+    },
     { --Not enough to take
 		type = "checkbox",
 		name = WG.Lang.SETTING_NE_TAKE,
@@ -420,6 +432,7 @@ function WG.BuildMenu()
         { --Withdraw for Daily Writs
         type = "button",
         name = WG.Lang.GUILD_TAKE_WRITS,
+        tooltip = WG.Lang.GUILD_TAKE_WRITS_TOOLTIP,
         func = function()
           table.insert(WG.SV.Guild1, {["GuildId"] = WG.SV.Guild[1], ["Type"] = WAREGUILD_DAILY})
         end,
@@ -607,6 +620,7 @@ function WG.BuildMenu()
         { --Withdraw for Daily Writs
         type = "button",
         name = WG.Lang.GUILD_TAKE_WRITS,
+        tooltip = WG.Lang.GUILD_TAKE_WRITS_TOOLTIP,
         func = function()
           table.insert(WG.SV.Guild2, {["GuildId"] = WG.SV.Guild[2], ["Type"] = WAREGUILD_DAILY})
         end,
@@ -667,7 +681,7 @@ function WG.BuildMenu()
 		controls = {
         { --Item Scroll
         type = "dropdown",
-        name = WG.Lang.GUILD_ITEM_SCROLL, 
+        name = WG.Lang.GUILD_ITEM_SCROLL,
         choices = ItemList(),
         scrollable = true,
         getFunc = function() if GuildD3A then return GuildD3A else return "/" end end,
@@ -794,6 +808,7 @@ function WG.BuildMenu()
         { --Withdraw for Daily Writs
         type = "button",
         name = WG.Lang.GUILD_TAKE_WRITS,
+        tooltip = WG.Lang.GUILD_TAKE_WRITS_TOOLTIP,
         func = function()
           table.insert(WG.SV.Guild3, {["GuildId"] = WG.SV.Guild[3], ["Type"] = WAREGUILD_DAILY})
         end,
@@ -981,6 +996,7 @@ function WG.BuildMenu()
         { --Withdraw for Daily Writs
         type = "button",
         name = WG.Lang.GUILD_TAKE_WRITS,
+        tooltip = WG.Lang.GUILD_TAKE_WRITS_TOOLTIP,
         func = function()
           table.insert(WG.SV.Guild4, {["GuildId"] = WG.SV.Guild[4], ["Type"] = WAREGUILD_DAILY})
         end,
@@ -1168,6 +1184,7 @@ function WG.BuildMenu()
         { --Withdraw for Daily Writs
         type = "button",
         name = WG.Lang.GUILD_TAKE_WRITS,
+        tooltip = WG.Lang.GUILD_TAKE_WRITS_TOOLTIP,
         func = function()
           table.insert(WG.SV.Guild5, {["GuildId"] = WG.SV.Guild[5], ["Type"] = WAREGUILD_DAILY})
         end,

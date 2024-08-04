@@ -63,6 +63,9 @@ WG.Lang = {
   ["SETTING_BAN_STORE_WRITS"] = "Disable Storage Steps When holds Daily Writs",
   ["SETTING_BAN_STORE_WRITS_TOOLTIP"] = "If you want to use guild banks for daily writs, you should turn on this option",
   
+  ["SETTING_IGNORE_INVENTORY"] = "[Withdraw for Daily Writs] Ignore Inventory",
+  ["SETTING_IGNORE_INVENTORY_TOOLTIP"] = "When on, this step ignores materials already in your backpack, personal bank and crafting packages and directly withdraw all quantities of material required for daily writs",
+  
   ["SETTING_NE_TAKE"] = "When Not Enough, Withdraw the Remaining",
   ["SETTING_NE_TAKE_TOOLTIP"] = "When off, withdraw steps were skipped for lack of items",
   
@@ -94,6 +97,7 @@ WG.Lang = {
   ["GUILD_STORE_ALL_TYPE"] = "Store Craft Materials",
   
   ["GUILD_TAKE_WRITS"] = "Withdraw for Daily Writs",
+  ["GUILD_TAKE_WRITS_TOOLTIP"] = "This requires receiving daily writs first!\nEach guild only needs to add once, the rules are as follows: \nTake out the missing raw materials for BlackSmith, Clothing, Woodworking, Jewelry and Enchanting\nTake out the finished products for Cooking and Alchemy\nTake out the materials to submitt for Enchanting and Alchemy\n*Style materials are not included",
   
   ["GUILD_HEADER_STEPS"] = "Operating Steps",
   ["GUILD_STEPS_SLIDER"] = "Select the Row of Step",

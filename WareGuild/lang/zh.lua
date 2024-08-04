@@ -63,6 +63,9 @@ WG.Lang = {
   ["SETTING_BAN_STORE_WRITS"] = "生产日常时，禁用存储相关步骤",
   ["SETTING_BAN_STORE_WRITS_TOOLTIP"] = "需要利用公会银行进行生产日常时，推荐开启",
   
+  ["SETTING_IGNORE_INVENTORY"] = "[取出日常生产物品] 步骤无视库存",
+  ["SETTING_IGNORE_INVENTORY_TOOLTIP"] = "开启后，该步骤将无视背包、个人银行和制作包裹中已有材料的数量，直接取出日常委托需要数量的材料",
+  
   ["SETTING_NE_TAKE"] = "物品不足时，取出所有剩余",
   ["SETTING_NE_TAKE_TOOLTIP"] = "关闭时，物品不足将跳过该取出步骤",
   
@@ -94,6 +97,7 @@ WG.Lang = {
   ["GUILD_STORE_ALL_TYPE"] = "存储该类材料",
   
   ["GUILD_TAKE_WRITS"] = "取出日常生产物品",
+  ["GUILD_TAKE_WRITS_TOOLTIP"] = "需要先接取日常制造任务！\n每个公会仅需添加一次，具体规则如下：\n为 锻铁、制衣、木匠、珠宝和附魔 取出制作缺少的原材料\n为 烹饪和炼金 取出成品\n为 附魔和炼金 取出需提交的材料\n*不含有样式材料",
   
   ["GUILD_HEADER_STEPS"] = "操作步骤",
   ["GUILD_STEPS_SLIDER"] = "选择步骤所在行",

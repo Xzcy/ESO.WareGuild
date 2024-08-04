@@ -259,6 +259,9 @@ end
 
 --Materials still need to take
 local function MaterialCount(ItemId, NumTotal)
+  --Ignore Inventory Setting
+  if WG.SV.IgnoreInventory then return NumTotal end
+  --Count Inventory
   local ItemLink = ToLink(ItemId)
   local BackbagCount, BankCount, CraftbagCount =  GetItemLinkStacks(ItemLink)
   local Tep = NumTotal - BackbagCount - BankCount - CraftbagCount
