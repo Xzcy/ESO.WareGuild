@@ -64,7 +64,7 @@ WG.Lang = {
   ["SETTING_BAN_STORE_WRITS_TOOLTIP"] = "需要利用公会银行进行生产日常时，推荐开启",
   
   ["SETTING_IGNORE_INVENTORY"] = "[取出日常生产物品] 步骤无视库存",
-  ["SETTING_IGNORE_INVENTORY_TOOLTIP"] = "开启后，该步骤将无视背包、个人银行和制作包裹中已有材料的数量，直接取出日常委托需要数量的材料",
+  ["SETTING_IGNORE_INVENTORY_TOOLTIP"] = "开启后，该步骤将无视背包、个人银行和制作包裹中，可用于制作产物的材料数量（例：共需要42锭生产，已有30锭。开启后将尝试从公会银行取出42锭而不是12锭）",
   
   ["SETTING_NE_TAKE"] = "物品不足时，取出所有剩余",
   ["SETTING_NE_TAKE_TOOLTIP"] = "关闭时，物品不足将跳过该取出步骤",

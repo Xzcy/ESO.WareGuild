@@ -258,16 +258,24 @@ local function ToLink(Id)
 end
 
 --Materials still need to take
-local function MaterialCount(ItemId, NumTotal)
-  --Ignore Inventory Setting
-  if WG.SV.IgnoreInventory then return NumTotal end
-  --Count Inventory
+local function MaterialCount(ItemId, NumTotal, Ignore)
+  --ItemLink
   local ItemLink = ToLink(ItemId)
+  --Current Stack
   local BackbagCount, BankCount, CraftbagCount =  GetItemLinkStacks(ItemLink)
-  local Tep = NumTotal - BackbagCount - BankCount - CraftbagCount
-  if Tep > 0 then
-    return Tep
+  
+  --Ignore Inventory Setting
+  if WG.SV.IgnoreInventory or Ignore then 
+    return (NumTotal + BackbagCount)
+  end
+  
+  --Count Inventory
+  local NumLack = NumTotal - BackbagCount - BankCount - CraftbagCount
+  if NumLack > 0 then
+    --Need to Withdraw
+    return (NumLack + BackbagCount)
   else
+    --No Need to Withdraw
     return 0
   end
 end
@@ -291,36 +299,35 @@ function WG.FindDailyItem()
         local ItemId, MaterialId, CraftType, Quilty = GetQuestConditionItemInfo(a, 1, b)
         local NumHold, NumCondition = GetJournalQuestConditionValues(a, 1, b)
         local Need = NumCondition - NumHold
+        --Something Undone
         if ItemId ~= 0 and Need > 0 then
           --Raw Materials for Alchemy and Enchant
           if CraftType == 0 then
-            table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Need})
+            local Target = MaterialCount(ItemId, Need, true)
+            table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Target})
           end
           --Black/Cloth/Wood/Jewelry
           if CraftType == 1 or CraftType == 2 or CraftType == 6 or CraftType == 7 then
             local RawId, NumPer = unpack(WG.MaterialExcel[CraftType][ItemId][MaterialId])
-            local NumLack = MaterialCount(RawId, NumPer * Need)
-            if NumLack > 0 then
-              SmithM[RawId] = SmithM[RawId] or 0
-              SmithM[RawId] = SmithM[RawId] + NumLack
-            end
+            SmithM[RawId] = SmithM[RawId] or 0
+            SmithM[RawId] = SmithM[RawId] + (NumPer * Need)
           end
-          --Enchant
+          --Enchant Craft Material
           if CraftType == 3 then
             local Fork, Rule1 = unpack(WG.MaterialExcel[CraftType]["Id"][ItemId])
             local Rule2, Rule3 = WG.MaterialExcel[CraftType]["Level"][MaterialId][Fork], WG.MaterialExcel[CraftType]["Quilty"][Quilty]
-            local NumLack1, NumLack2, NumLack3 = MaterialCount(Rule1, 1), MaterialCount(Rule2, 1), MaterialCount(Rule3, 1)
-            if NumLack1 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule1, ["Count"] = NumLack1})
+            local Target1, Target2, Target3 = MaterialCount(Rule1, Need), MaterialCount(Rule2, Need), MaterialCount(Rule3, Need)
+            if Target1 > 0 then
+              table.insert(Materials, {["ItemId"] = Rule1, ["Count"] = Target1})
             end
-            if NumLack2 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule2, ["Count"] = NumLack2})
+            if Target2 > 0 then
+              table.insert(Materials, {["ItemId"] = Rule2, ["Count"] = Target2})
             end
-            if NumLack3 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule3, ["Count"] = NumLack3})
+            if Target3 > 0 then
+              table.insert(Materials, {["ItemId"] = Rule3, ["Count"] = Target3})
             end
           end
-          --Cook/Alchemy
+          --Cook/Alchemy Production
           if CraftType == 4 or CraftType == 5 then
             local StartPoint = GetNextGuildBankSlotId()
             if GetNextGuildBankSlotId then
@@ -338,7 +345,11 @@ function WG.FindDailyItem()
   end
   --Smith Materials
   for ItemId, Count in pairs(SmithM) do
-    table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Count})
+    local Target = MaterialCount(ItemId, Count)
+    if Target > 0 then
+      table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Target})
+    end
   end
+  --End
   return Materials
 end
