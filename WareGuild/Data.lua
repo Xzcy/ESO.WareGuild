@@ -283,67 +283,74 @@ end
 --Find Missing Item for Daily Writs
 function WG.FindDailyItem()
   local Materials = {
-  --["ItemLink"], ["Count"], ["ItemId"]
+    --["ItemLink"], ["Count"], ["ItemId"]
   }
   local SmithM = {
-  --[ItemId] = Num
+    --[ItemId] = Num
   }
-
   --Check Quests
   for a = 1, 25 do
     local Type = select(10, GetJournalQuestInfo(a))
     --Daily Writs
     if Type == 4 and not GetQuestConditionMasterWritInfo(a, 1, 1) then
       --Writ Condition
+      local Enchant2T
       for b = 1, 6 do
         local ItemId, MaterialId, CraftType, Quilty = GetQuestConditionItemInfo(a, 1, b)
-        local NumHold, NumCondition = GetJournalQuestConditionValues(a, 1, b)
+        local NumHold, NumCondition = GetJournalQuestConditionValues(a, 1, b) 
         local Need = NumCondition - NumHold
-        --Something Undone
-        if ItemId ~= 0 and Need > 0 then
-          --Raw Materials for Alchemy and Enchant
-          if CraftType == 0 then
-            local Target = MaterialCount(ItemId, Need, true)
-            table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Target})
-          end
+        if ItemId ~= 0 then
           --Black/Cloth/Wood/Jewelry
-          if CraftType == 1 or CraftType == 2 or CraftType == 6 or CraftType == 7 then
+          if Need > 0 and (CraftType == 1 or CraftType == 2 or CraftType == 6 or CraftType == 7) then
             local RawId, NumPer = unpack(WG.MaterialExcel[CraftType][ItemId][MaterialId])
             SmithM[RawId] = SmithM[RawId] or 0
             SmithM[RawId] = SmithM[RawId] + (NumPer * Need)
           end
-          --Enchant Craft Material
-          if CraftType == 3 then
-            local Fork, Rule1 = unpack(WG.MaterialExcel[CraftType]["Id"][ItemId])
-            local Rule2, Rule3 = WG.MaterialExcel[CraftType]["Level"][MaterialId][Fork], WG.MaterialExcel[CraftType]["Quilty"][Quilty]
-            local Target1, Target2, Target3 = MaterialCount(Rule1, Need), MaterialCount(Rule2, Need), MaterialCount(Rule3, Need)
-            if Target1 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule1, ["Count"] = Target1})
-            end
-            if Target2 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule2, ["Count"] = Target2})
-            end
-            if Target3 > 0 then
-              table.insert(Materials, {["ItemId"] = Rule3, ["Count"] = Target3})
-            end
-          end
-          --Cook/Alchemy Production
-          if CraftType == 4 or CraftType == 5 then
+          --Alchemy and Cook Production
+          if Need > 0 and ((CraftType == 4 and MaterialId ~= 0) or CraftType == 5) then
             local StartPoint = GetNextGuildBankSlotId()
             if GetNextGuildBankSlotId then
               for i = StartPoint, StartPoint + 500 do
                 local ItemLink = GetItemLink(3, i)
-                if ItemLink ~= "" and DoesItemLinkFulfillJournalQuestCondition(ItemLink, a, 1, b, true) then
+                if ItemLink ~= "" and DoesItemLinkFulfillJournalQuestCondition(ItemLink, a, 1, b, GetItemCreatorName(3, i) == GetUnitName("player")) then
                   table.insert(Materials, {["ItemLink"] = ItemLink, ["Count"] = 1})
                 end
               end
             end
           end
+          --Alchemy Raw Materials
+          if Need > 0 and CraftType == 4 and MaterialId == 0 then
+            local Target = MaterialCount(ItemId, Need, true)
+            table.insert(Materials, {["ItemId"] = ItemId, ["Count"] = Target})
+          end
+          --Enchant Production
+          if Need > 0 and CraftType == 3 and MaterialId ~= 0 then
+            local Fork, Rule1 = unpack(WG.MaterialExcel[CraftType]["Id"][ItemId])
+            local Rule2, Rule3 = WG.MaterialExcel[CraftType]["Level"][MaterialId][Fork], WG.MaterialExcel[CraftType]["Quilty"][Quilty]
+            SmithM[Rule1] = 1
+            SmithM[Rule2] = 1
+            SmithM[Rule3] = 1
+          end
+          --Enchant Raw Material
+          if Need > 0 and CraftType == 3 and MaterialId == 0 then
+            Enchant2T = ItemId
+          end
+        end
+      end
+      --Enchant Writ Patch
+      if Enchant2T then
+        if SmithM[Enchant2T] and MaterialCount(Enchant2T, 1) > 0 then
+          local Target = MaterialCount(Enchant2T, 2, true)
+          table.insert(Materials, {["ItemId"] = Enchant2T, ["Count"] = Target})
+          SmithM[Enchant2T] = nil
+        else
+          local Target = MaterialCount(Enchant2T, 1, true)
+          table.insert(Materials, {["ItemId"] = Enchant2T, ["Count"] = Target})
         end
       end
     end
   end
-  --Smith Materials
+  --Raw Materials
   for ItemId, Count in pairs(SmithM) do
     local Target = MaterialCount(ItemId, Count)
     if Target > 0 then
